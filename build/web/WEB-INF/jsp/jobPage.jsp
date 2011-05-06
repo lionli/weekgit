@@ -20,9 +20,6 @@
         <link rel="stylesheet" type="text/css" href="build/datatable/assets/skins/sam/datatable.css"/>
         <link rel="stylesheet" type="text/css" href="build/treeview/assets/skins/sam/treeview.css" />
 
-        <script type="text/javascript" src="flexigrid/lib/jquery/jquery.js"></script>
-        <script type="text/javascript" src="flexigrid/flexigrid.js"></script>
-
         <script type="text/javascript" src="build/yahoo-dom-event/yahoo-dom-event.js"></script>
         <script type="text/javascript" src="build/element/element-min.js"></script>
         <script type="text/javascript" src="build/tabview/tabview-min.js"></script>
@@ -33,6 +30,7 @@
         <script type="text/javascript" src="dwr/engine.js"></script>
         <script type="text/javascript" src="dwr/util.js"></script>
         <script type="text/javascript" src="dwr/interface/Test.js"></script>
+        <script type="text/javascript" src="dwr/interface/JobService"></script>
         <script type="text/javascript">
             (function(){
                 var init = function() {
@@ -124,6 +122,10 @@
                 var selectedIndex=hostBox.selectedIndex;
                 var value=hostBox.options[selectedIndex].value;
                 clearListBox(document.getElementById('agentBox'));
+
+                JobService.getHostAgents(value,function(data){
+                    alert(data);
+                });
                 
             }
         </script>

@@ -11,6 +11,7 @@ import com.viton.model.BackupResource;
 import com.viton.model.Device;
 import com.viton.model.Host;
 import com.viton.model.VolumeGroup;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -196,15 +197,15 @@ public class JSONUtils {
         return (Map)parser.parse(jsonText,new MyContainerFactory());
     }
 
-    public static void parseFileNode(String fileNodeJSON) throws Exception{
+    public static List<Map<String,String>> parseFileNode(String fileNodeJSON) throws Exception{
+        List<Map<String,String>> list=new ArrayList<Map<String,String>>();
         JSONParser parser=new JSONParser();
         Object obj=parser.parse(fileNodeJSON);
         JSONArray arr=(JSONArray)obj;
         for(int i=0;i<arr.size();i++){
             Map<String,String> info=parseJSON(arr.get(i).toString());
-            System.out.println("FileParent: "+info.get("fileParent")+", FileType: "+
-                    info.get("fileType")+", FilePath: "+info.get("filePath")+", CheckState: "+
-                    info.get("checkState"));
+            list.add(info);
         }
+        return list;
     }
 }

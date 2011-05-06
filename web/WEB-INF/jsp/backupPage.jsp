@@ -77,6 +77,7 @@
         <script type="text/javascript" src="dwr/util.js"></script>
         <script type="text/javascript" src="dwr/interface/Test.js"></script>
         <script type="text/javascript" src="dwr/interface/SshService.js"></script>
+        <script type="text/javascript" src="dwr/interface/BackupService.js"></script>
         <script type="text/javascript">
             Agent=function(hostid,agentname,osname,ospassword,port){
                 this.hostid=hostid;
@@ -275,10 +276,12 @@
         }
 
         function fileNodeJSON(fileObj){
-            var json="{"
+            var json="{"+
                 makePair("filePath",fileObj.filePath)+","+
                 makePair("fileType",fileObj.fileType)+","+
+                makePair("fileParent",fileObj.fileParent)+","+
                 makePair("checkState",fileObj.checkState)+"}";
+        //    alert(json);
             return json;
         }
 
@@ -297,21 +300,23 @@
             var arr=[];
             for(var i=0;i<nodes.length;i++){
                 var fileName=getFilePath(nodes[i]);
-              //  var fileParent=getFilePath(nodes[i].parent);
                 var fileType=nodes[i].hasChildren()?"d":"f";
                 var checkState=nodes[i].checkState;
-                var fileObj=FileNode(fileName,fileType,checkState);
+                var fileParent=getFilePath(nodes[i].parent);
+                var fileObj=FileNode(fileType,fileName,fileParent,checkState);
                 arr.push(fileNodeJSON(fileObj));
             }
-            Test.test(arrToJSON(arr),function(data){
+            BackupService.getFileBackupSelectionSet(arrToJSON(arr),function(data){
               //  alert(data);
             });
-      //      alert(arrToJSON(arr));
         }
 
         function getFilePath(tNode){
             var rootNode=tree.getRoot();
             var tmpNode=tNode;
+            if(tmpNode==rootNode.children[0]){
+                return "FixedDrives";
+            }
             var filePath=tmpNode.label;
             tmpNode=tmpNode.parent;
             while(tmpNode!=rootNode.children[0]){

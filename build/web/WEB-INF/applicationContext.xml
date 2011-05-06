@@ -61,6 +61,19 @@
             <dwr:include method="isAuthenticated"/>
         </dwr:remote>
     </bean>
+
+    <bean id="backupService" class="com.viton.service.BackupService">
+        <dwr:remote javascript="BackupService">
+            <dwr:include method="getFileBackupSelectionSet"/>
+        </dwr:remote>
+    </bean>
+
+    <bean id="jobService" class="com.viton.service.JobService">
+        <property name="dao" ref="dao"/>
+        <dwr:remote javascript="JobService">
+            <dwr:include method="getHostAgents"/>
+        </dwr:remote>
+    </bean>
     
     <dwr:configuration/>
 </beans>

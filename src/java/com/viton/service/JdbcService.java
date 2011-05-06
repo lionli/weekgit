@@ -15,11 +15,13 @@ import com.viton.model.Host;
 import com.viton.model.VolumeGroup;
 import com.viton.util.JSONUtils;
 import com.viton.util.Utils;
+import com.viton.util.XMLUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -163,7 +165,14 @@ public class JdbcService {
         return messages;
     }
 
+
     public void test(String text) throws Exception{
-        JSONUtils.parseFileNode(text);
+        List<Map<String,String>> list=JSONUtils.parseFileNode(text);
+        Map<String,Map<String,String>> map=new HashMap<String,Map<String,String>>();
+        for(Map<String,String> tmp:list){
+            map.put(tmp.get("filePath"), tmp);
+        }
+        String xml=XMLUtils.createFileSelectionSet(map);
+        System.out.println(xml);
     }
 }
