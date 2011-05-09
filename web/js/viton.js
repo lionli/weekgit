@@ -14,3 +14,7 @@ function getButtonGroupValue(buttonGroup){
 function test1(){
    alert("test1");
 }
+
+function test3(){
+  alert("test3");
+}
