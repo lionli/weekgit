@@ -12,8 +12,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Job Manage</title>
-        <link rel="stylesheet" type="text/css" href="flexigrid/style.css"/>
-        <link rel="stylesheet" type="text/css" href="flexigrid/css/flexigrid/flexigrid.css"/>
 
         <link rel="stylesheet" type="text/css" href="build/fonts/fonts-min.css"/>
         <link rel="stylesheet" type="text/css" href="build/tabview/assets/skins/sam/tabview.css"/>
@@ -30,7 +28,7 @@
         <script type="text/javascript" src="dwr/engine.js"></script>
         <script type="text/javascript" src="dwr/util.js"></script>
         <script type="text/javascript" src="dwr/interface/Test.js"></script>
-        <script type="text/javascript" src="dwr/interface/JobService"></script>
+        <script type="text/javascript" src="dwr/interface/JobService.js"></script>
         <script type="text/javascript">
             (function(){
                 var init = function() {
@@ -68,7 +66,7 @@
                     var jobDataTable=new YAHOO.widget.DataTable("runStatusTable",columnDefs,jobDataSource,{scrollable:true,width:"100%"});
                     var jobTab=new YAHOO.widget.TabView("jobTab");
                     jobTab.getTab(0).addListener("click",function(){jobDataTable.onShow()});
-
+                    jobTab.selectTab(0);
                     return {
                         oDS:jobDataSource,
                         oDT:jobDataTable,
@@ -121,13 +119,20 @@
                 var hostBox=document.getElementById('hostBox');
                 var selectedIndex=hostBox.selectedIndex;
                 var value=hostBox.options[selectedIndex].value;
-                clearListBox(document.getElementById('agentBox'));
+
+                var agentBox=document.getElementById('agentBox');
+                clearListBox(agentBox);
 
                 JobService.getHostAgents(value,function(data){
-                    alert(data);
+                    var agents=eval('('+data+')');
+                    agentBox.appendChild(createOptionElement('所有代理','all'));
+                    for(var i=0;i<agents.length;i++){
+                        agentBox.appendChild(createOptionElement(agents[i].agentDesc,agents[i].agentName));
+                    }
                 });
                 
             }
+
         </script>
     </head>
     <body class="yui-skin-sam">

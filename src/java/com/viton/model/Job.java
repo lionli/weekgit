@@ -15,7 +15,7 @@ public class Job {
     private String jobName;
     private String jobType;
     private String startTime;
-    private String executionTime;
+    private String durationTime;
     private String jobStatus;
     private String preRunTime;
     private String nextRunTime;
@@ -29,12 +29,12 @@ public class Job {
         this.agentType = agentType;
     }
 
-    public String getExecutionTime() {
-        return executionTime;
+    public String getDurationTime() {
+        return durationTime;
     }
 
-    public void setExecutionTime(String executionTime) {
-        this.executionTime = executionTime;
+    public void setDurationTime(String durationTime) {
+        this.durationTime = durationTime;
     }
 
     public String getFirstRunTime() {

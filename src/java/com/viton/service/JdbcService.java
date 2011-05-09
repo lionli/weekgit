@@ -166,13 +166,7 @@ public class JdbcService {
     }
 
 
-    public void test(String text) throws Exception{
-        List<Map<String,String>> list=JSONUtils.parseFileNode(text);
-        Map<String,Map<String,String>> map=new HashMap<String,Map<String,String>>();
-        for(Map<String,String> tmp:list){
-            map.put(tmp.get("filePath"), tmp);
-        }
-        String xml=XMLUtils.createFileSelectionSet(map);
-        System.out.println(xml);
+    public String test(){
+        return "bb";
     }
 }

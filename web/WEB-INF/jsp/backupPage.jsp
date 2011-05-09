@@ -47,6 +47,9 @@
 
         <script type="text/javascript" src="assets/js/TaskNode.js"></script>
 
+        <script type="text/javascript" src="js/backup.js"></script>
+        <script type="text/javascript" src="js/vtcommon.js"></script>
+
         <style type="text/css">
             .yui-navset-left .yui-nav li,
             .yui-navset-right .yui-nav li{
@@ -70,7 +73,16 @@
                 float:left;
                 width:30%;
                 clear: left;
-}
+            }
+
+            #submitTable tr{
+                height:150px;
+
+            }
+            #submitTable td{
+                vertical-align: top;
+                padding-left: 30px;
+            }
 
         </style>
         <script type="text/javascript" src="dwr/engine.js"></script>
@@ -144,7 +156,7 @@
                         if(node.isExpendedBefore){
                             return;
                         }
-                   /**     var xx=new Agent("012cd863-9853-4c7d-aaa1-eeb617434575",
+                        /**     var xx=new Agent("012cd863-9853-4c7d-aaa1-eeb617434575",
                         "ext2-lnx-agent","root","lionli","22");*/
                         var dirPath="";
                         var tmpNode=node;
@@ -152,7 +164,7 @@
                             dirPath=tmpNode.label+"/"+dirPath;
                             tmpNode=tmpNode.parent;
                         }
-                  //      alert(constructAgentJSON(xx));
+                        //      alert(constructAgentJSON(xx));
                         Test.getFileList(constructAgentJSON(xx),dirPath,function(data){
                             for(var i=0;i<node.children.length;i++){
                                 tree.removeNode(node.children[i]);
@@ -170,351 +182,335 @@
                         });
                     });
 
-                tree.subscribe("collapse", function(node) {
-                    YAHOO.log(node.index + " was collapsed", "info", "example");
-                });
-
-                // Trees with TextNodes will fire an event for when the label is clicked:
-                tree.subscribe("labelClick", function(node) {
-                    YAHOO.log(node.index + " label was clicked", "info", "example");
-                });
-
-                // Trees with TaskNodes will fire an event for when a check box is clicked
-                tree.subscribe("checkClick", function(node) {
-                    YAHOO.log(node.index + " check was clicked", "info", "example");
-                });
-
-                tree.subscribe("clickEvent", function(node) {
-                    YAHOO.log(node.index + " clickEvent", "info", "example");
-                });
-
-                YAHOO.util.Event.on("expand", "click", function(e) {
-                    YAHOO.log("Expanding all TreeView  nodes.", "info", "example");
-                    tree.expandAll();
-                    YAHOO.util.Event.preventDefault(e);
-                });
-
-                //handler for collapsing all nodes
-                YAHOO.util.Event.on("collapse", "click", function(e) {
-                    YAHOO.log("Collapsing all TreeView  nodes.", "info", "example");
-                    tree.collapseAll();
-                    YAHOO.util.Event.preventDefault(e);
-                });
-
-                //handler for checking all nodes
-                YAHOO.util.Event.on("check", "click", function(e) {
-                    YAHOO.log("Checking all TreeView  nodes.", "info", "example");
-                    checkAll();
-                    YAHOO.util.Event.preventDefault(e);
-                });
-
-                //handler for unchecking all nodes
-                YAHOO.util.Event.on("uncheck", "click", function(e) {
-                    YAHOO.log("Unchecking all TreeView  nodes.", "info", "example");
-                    uncheckAll();
-                    YAHOO.util.Event.preventDefault(e);
-                });
-
-
-                YAHOO.util.Event.on("getchecked", "click", function(e) {
-                    YAHOO.log("Checked nodes: " + YAHOO.lang.dump(getCheckedNodes()), "info", "example");
-
-                    YAHOO.util.Event.preventDefault(e);
-                });
-                    
-                tree.draw();
-
-                function onCheckClick(node) {
-                    YAHOO.log(node.label + " check was clicked, new state: " +
-                        node.checkState, "info", "example");
-                }
-
-                function checkAll() {
-                    var topNodes = tree.getRoot().children;
-                    for(var i=0; i<topNodes.length; ++i) {
-                        topNodes[i].check();
-                    }
-                }
-
-                function uncheckAll() {
-                    var topNodes = tree.getRoot().children;
-                    for(var i=0; i<topNodes.length; ++i) {
-                        topNodes[i].uncheck();
-                    }
-                }
-
-            });
-        }
-
-        
-
-        function getCheckedNodes(nodes) {
-            nodes = nodes || tree.getRoot().children[0].children;
-            checkedNodes = [];
-            for(var i=0, l=nodes.length; i<l; i=i+1) {
-                var n = nodes[i];
-                //if (n.checkState > 0) { // if we were interested in the nodes that have some but not all children checked
-                if (n.checkState > 0) {
-                    checkedNodes.push(n); 
-                }
-
-                if (n.checkState===1 && n.hasChildren()) {
-                    checkedNodes = checkedNodes.concat(getCheckedNodes(n.children));
-                }
-            }
-
-            return checkedNodes;
-        }
-
-        function FileNode(sFileType,sFilePath,sFileParent,iCheckState){
-            var obj=new Object;
-            obj.fileType=sFileType;
-            obj.filePath=sFilePath;
-            obj.fileParent=sFileParent;
-            obj.checkState=iCheckState;
-            return obj;
-        }
-
-        function fileNodeJSON(fileObj){
-            var json="{"+
-                makePair("filePath",fileObj.filePath)+","+
-                makePair("fileType",fileObj.fileType)+","+
-                makePair("fileParent",fileObj.fileParent)+","+
-                makePair("checkState",fileObj.checkState)+"}";
-        //    alert(json);
-            return json;
-        }
-
-        function arrToJSON(arr){
-            var json="[";
-            for(var i=0;i<arr.length-1;i++){
-                json=json+arr[i]+",";
-            }
-            json=json+arr[arr.length-1];
-            json=json+"]";
-            return json;
-        }
-
-        function getSelected(){
-            var nodes=getCheckedNodes();
-            var arr=[];
-            for(var i=0;i<nodes.length;i++){
-                var fileName=getFilePath(nodes[i]);
-                var fileType=nodes[i].hasChildren()?"d":"f";
-                var checkState=nodes[i].checkState;
-                var fileParent=getFilePath(nodes[i].parent);
-                var fileObj=FileNode(fileType,fileName,fileParent,checkState);
-                arr.push(fileNodeJSON(fileObj));
-            }
-            BackupService.getFileBackupSelectionSet(arrToJSON(arr),function(data){
-              //  alert(data);
-            });
-        }
-
-        function getFilePath(tNode){
-            var rootNode=tree.getRoot();
-            var tmpNode=tNode;
-            if(tmpNode==rootNode.children[0]){
-                return "FixedDrives";
-            }
-            var filePath=tmpNode.label;
-            tmpNode=tmpNode.parent;
-            while(tmpNode!=rootNode.children[0]){
-                filePath=tmpNode.label+"/"+filePath;
-                tmpNode=tmpNode.parent;
-            }
-            return filePath;
-        }
-
-        (function(){
-            var init = function() {
-                Test.getRegHostIdAndNames(function(data){
-                    var hosts=eval('('+data+')');
-                    initHostSelection(hosts);
-                });
-
-            }
-            YAHOO.util.Event.onDOMReady(init);
-        })();
-
-        (function(){
-            var init=function(){
-                var xx=document.getElementsByName('whenToAction');
-                var once=document.getElementById('once_time');
-                var period=document.getElementById('period_time');
-                var periodSelectedBox=document.getElementsByName('period_day');
-                for(var i=0;i<xx.length;i++){
-                    xx[i].onchange=function(){
-                        var selectedValue=this.value;
-                        if(selectedValue==="immediate"){
-                            disabledElement(new Array(once,period));
-                            disabledElement(periodSelectedBox);
-                            document.getElementById('dayTable').style.display="none";
-                        }else if(selectedValue==="once"){
-                            enabledElement(new Array(once));
-                            disabledElement(new Array(period));
-                            disabledElement(periodSelectedBox);
-                            document.getElementById('dayTable').style.display="none";
-                        }else if(selectedValue==="period"){
-                            enabledElement(new Array(period));
-                            enabledElement(periodSelectedBox);
-                            disabledElement(new Array(once));
-                            document.getElementById('dayTable').style.display="block";
-                            var dayOfWeek=document.getElementById('dayOfWeek');
-                            var dayOfMonth=document.getElementById('dayOfMonth');
-                            for(var i=0;i<periodSelectedBox.length;i++){
-                                periodSelectedBox[i].onchange=function(){
-                                    var value=this.value;
-                                    if(value==="everyday"){
-                                        dayOfWeek.style.display='none';
-                                        dayOfMonth.style.display='none';
-                                    }else if(value==="everyweek"){
-                                        dayOfMonth.style.display='none';
-                                        dayOfWeek.style.display='block';
-                                    }else if(value=="everymonth"){
-                                        dayOfWeek.style.display='none';
-                                        dayOfMonth.style.display='block';
-                                    }
-                                };
-                            }
-                        }
-                    };
-                }
-                disabledElement(new Array(once,period));
-                disabledElement(periodSelectedBox);
-                document.getElementById('dayTable').style.display="none";
-            };
-            YAHOO.util.Event.onDOMReady(init);
-        })();
-
-            
-        function disabledElement(elementArr){
-            for(var i=0;i<elementArr.length;i++){
-                elementArr[i].disabled=true;
-            }
-        }
-
-        function enabledElement(elementArr){
-            for(var i=0;i<elementArr.length;i++){
-                elementArr[i].disabled=false;
-            }
-        }
-
-        function initHostSelection(items){
-            var len=items.length;
-            var oS=document.getElementById("hostSelection");
-            clearSelection(document.getElementById('agentSelection'));
-            clearSelection(document.getElementById('instanceSelection'));
-            for(var i=0;i<len;i++){
-                var oOption=document.createElement("option");
-                oOption.setAttribute("value", items[i].hostId);
-                var oNode=document.createTextNode(items[i].hostName);
-                oOption.appendChild(oNode);
-                oS.appendChild(oOption);
-            }
-            oS.selectedIndex=-1;
-        }
-
-        function loginToHost(){
-         //   resetLoginDialog();
-         //   document.getElementById('showLoginDialog').click();
-         fillAgent();
-        }
-
-        function fillAgent(){
-            var hostSelection=document.getElementById("hostSelection");
-            var selectedIndex=hostSelection.selectedIndex;
-            var selectedValue=hostSelection.options[selectedIndex].value;
-
-            clearSelection(document.getElementById('instanceSelection'));
-
-            Test.getHostAgentNames(selectedValue,function(data){
-                var agentNames=eval('('+data+')');
-                var len=agentNames.length;
-                var agentSelection=document.getElementById('agentSelection');
-                clearSelection(agentSelection);
-                for(var i=0;i<len;i++){
-                    var oOption=document.createElement("option");
-                    oOption.setAttribute("value", agentNames[i].agentName);
-                    var oNode=document.createTextNode(agentNames[i].agentDesc);
-                    oOption.appendChild(oNode);
-                    agentSelection.appendChild(oOption);
-                }
-                agentSelection.selectedIndex=-1;
-            });
-        }
-
-        function fillInstance(){
-            var hostSelection=document.getElementById("hostSelection");
-            var agentSelection=document.getElementById("agentSelection");
-
-            var hostSelectedValue=hostSelection.options[hostSelection.selectedIndex].value;
-            var agentSelectedValue=agentSelection.options[agentSelection.selectedIndex].value;
-
-            Test.getHostAgentInstances(hostSelectedValue,agentSelectedValue,function(data){
-                var inst=eval('('+data+')');
-                var len=inst.length;
-                var instSelection=document.getElementById('instanceSelection');
-                clearSelection(instSelection);
-                for(var i=0;i<len;i++){
-                    var oOption=document.createElement("option");
-                    oOption.setAttribute("value", inst[i]);
-                    var oNode=document.createTextNode(inst[i]);
-                    oOption.appendChild(oNode);
-                    instSelection.appendChild(oOption);
-                }
-                drawTree();
-            });
-            
-        }
-        
-        function clearSelection(oList){
-            for(var i=oList.options.length-1;i>=0;i--){
-                oList.remove(i);
-            }
-        }
-
-        
-        (function(){
-            var init = function() {
-                var handleSubmit=function(){
-                    var hostList=document.getElementById('hostSelection');
-                    var selectedHost=hostList.options[hostList.selectedIndex].value;
-
-                    var username=document.getElementById('username').value;
-                   var password=document.getElementById('password').value;
-                   var port=document.getElementById('port').value;
-
-                   var errorInfo=document.getElementById('loginerrormsg');
-                   if(username==""){
-                       errorInfo.innerHTML="Please provide username";
-                       errorInfo.style.display="block";
-                   }
-                   if(port==""){
-                       errorInfo.innerHTML="Please provide access port.";
-                       errorInfo.style.display="block";
-                   }
-                   SshService.isAuthenticated(selectedHost,username,password,port,function(data){
-                        var isAuthenticated=eval('('+data+')');
-                        if(!isAuthenticated){
-                            errorInfo.innerHTML="Login failed. Click cancel to leave this dialog";
-                            errorInfo.style.display="block";
-                        }else{
-                            document.getElementById('hideLoginDialog').click();
-                            osUserName=username;
-                            osPassword=password;
-                            osPort=port;
-                            fillAgent();
-                        }
+                    tree.subscribe("collapse", function(node) {
+                        YAHOO.log(node.index + " was collapsed", "info", "example");
                     });
+
+                    // Trees with TextNodes will fire an event for when the label is clicked:
+                    tree.subscribe("labelClick", function(node) {
+                        YAHOO.log(node.index + " label was clicked", "info", "example");
+                    });
+
+                    // Trees with TaskNodes will fire an event for when a check box is clicked
+                    tree.subscribe("checkClick", function(node) {
+                        YAHOO.log(node.index + " check was clicked", "info", "example");
+                    });
+
+                    tree.subscribe("clickEvent", function(node) {
+                        YAHOO.log(node.index + " clickEvent", "info", "example");
+                    });
+
+                    YAHOO.util.Event.on("expand", "click", function(e) {
+                        YAHOO.log("Expanding all TreeView  nodes.", "info", "example");
+                        tree.expandAll();
+                        YAHOO.util.Event.preventDefault(e);
+                    });
+
+                    //handler for collapsing all nodes
+                    YAHOO.util.Event.on("collapse", "click", function(e) {
+                        YAHOO.log("Collapsing all TreeView  nodes.", "info", "example");
+                        tree.collapseAll();
+                        YAHOO.util.Event.preventDefault(e);
+                    });
+
+                    //handler for checking all nodes
+                    YAHOO.util.Event.on("check", "click", function(e) {
+                        YAHOO.log("Checking all TreeView  nodes.", "info", "example");
+                        checkAll();
+                        YAHOO.util.Event.preventDefault(e);
+                    });
+
+                    //handler for unchecking all nodes
+                    YAHOO.util.Event.on("uncheck", "click", function(e) {
+                        YAHOO.log("Unchecking all TreeView  nodes.", "info", "example");
+                        uncheckAll();
+                        YAHOO.util.Event.preventDefault(e);
+                    });
+
+
+                    YAHOO.util.Event.on("getchecked", "click", function(e) {
+                        YAHOO.log("Checked nodes: " + YAHOO.lang.dump(getCheckedNodes()), "info", "example");
+
+                        YAHOO.util.Event.preventDefault(e);
+                    });
+                    
+                    tree.draw();
+
+                    function onCheckClick(node) {
+                        YAHOO.log(node.label + " check was clicked, new state: " +
+                            node.checkState, "info", "example");
+                    }
+
+                    function checkAll() {
+                        var topNodes = tree.getRoot().children;
+                        for(var i=0; i<topNodes.length; ++i) {
+                            topNodes[i].check();
+                        }
+                    }
+
+                    function uncheckAll() {
+                        var topNodes = tree.getRoot().children;
+                        for(var i=0; i<topNodes.length; ++i) {
+                            topNodes[i].uncheck();
+                        }
+                    }
+
+                });
+            }
+
+        
+
+            function getCheckedNodes(nodes) {
+                nodes = nodes || tree.getRoot().children[0].children;
+                checkedNodes = [];
+                for(var i=0, l=nodes.length; i<l; i=i+1) {
+                    var n = nodes[i];
+                    //if (n.checkState > 0) { // if we were interested in the nodes that have some but not all children checked
+                    if (n.checkState > 0) {
+                        checkedNodes.push(n);
+                    }
+
+                    if (n.checkState===1 && n.hasChildren()) {
+                        checkedNodes = checkedNodes.concat(getCheckedNodes(n.children));
+                    }
                 }
 
-                var handleCancel=function(){
-                    this.hide();
-                    resetLoginDialg();
-                }
+                return checkedNodes;
+            }
 
-                var loginDialog=new YAHOO.widget.Dialog("loginDialog",
+            function FileNode(sFileType,sFilePath,sFileParent,iCheckState){
+                var obj=new Object;
+                obj.fileType=sFileType;
+                obj.filePath=sFilePath;
+                obj.fileParent=sFileParent;
+                obj.checkState=iCheckState;
+                return obj;
+            }
+
+            function fileNodeJSON(fileObj){
+                var json="{"+
+                    makePair("filePath",fileObj.filePath)+","+
+                    makePair("fileType",fileObj.fileType)+","+
+                    makePair("fileParent",fileObj.fileParent)+","+
+                    makePair("checkState",fileObj.checkState)+"}";
+                //    alert(json);
+                return json;
+            }
+
+            function arrToJSON(arr){
+                var json="[";
+                for(var i=0;i<arr.length-1;i++){
+                    json=json+arr[i]+",";
+                }
+                json=json+arr[arr.length-1];
+                json=json+"]";
+                return json;
+            }
+
+            
+
+            function getFilePath(tNode){
+                var rootNode=tree.getRoot();
+                var tmpNode=tNode;
+                if(tmpNode==rootNode.children[0]){
+                    return "FixedDrives";
+                }
+                var filePath=tmpNode.label;
+                tmpNode=tmpNode.parent;
+                while(tmpNode!=rootNode.children[0]){
+                    filePath=tmpNode.label+"/"+filePath;
+                    tmpNode=tmpNode.parent;
+                }
+                return filePath;
+            }
+
+            (function(){
+                var init = function() {
+                    Test.getRegHostIdAndNames(function(data){
+                        var hosts=eval('('+data+')');
+                        initHostSelection(hosts);
+                    });
+
+                }
+                YAHOO.util.Event.onDOMReady(init);
+            })();
+
+            (function(){
+                var init=function(){
+                    var xx=document.getElementsByName('whenToAction');
+                    var once=document.getElementById('once_time');
+                    var period=document.getElementById('period_time');
+                    var periodSelectedBox=document.getElementsByName('period_day');
+                    for(var i=0;i<xx.length;i++){
+                        xx[i].onchange=function(){
+                            var selectedValue=this.value;
+                            if(selectedValue==="immediate"){
+                                disabledElement(new Array(once,period));
+                                disabledElement(periodSelectedBox);
+                                document.getElementById('dayTable').style.display="none";
+                            }else if(selectedValue==="once"){
+                                enabledElement(new Array(once));
+                                disabledElement(new Array(period));
+                                disabledElement(periodSelectedBox);
+                                document.getElementById('dayTable').style.display="none";
+                            }else if(selectedValue==="period"){
+                                enabledElement(new Array(period));
+                                enabledElement(periodSelectedBox);
+                                disabledElement(new Array(once));
+                                document.getElementById('dayTable').style.display="block";
+                                var dayOfWeek=document.getElementById('dayOfWeek');
+                                var dayOfMonth=document.getElementById('dayOfMonth');
+                                for(var i=0;i<periodSelectedBox.length;i++){
+                                    periodSelectedBox[i].onchange=function(){
+                                        var value=this.value;
+                                        if(value==="everyday"){
+                                            dayOfWeek.style.display='none';
+                                            dayOfMonth.style.display='none';
+                                        }else if(value==="everyweek"){
+                                            dayOfMonth.style.display='none';
+                                            dayOfWeek.style.display='block';
+                                        }else if(value=="everymonth"){
+                                            dayOfWeek.style.display='none';
+                                            dayOfMonth.style.display='block';
+                                        }
+                                    };
+                                }
+                            }
+                        };
+                    }
+                    disabledElement(new Array(once,period));
+                    disabledElement(periodSelectedBox);
+                    document.getElementById('dayTable').style.display="none";
+                };
+                YAHOO.util.Event.onDOMReady(init);
+            })();
+
+            
+         /**   function disabledElement(elementArr){
+                for(var i=0;i<elementArr.length;i++){
+                    elementArr[i].disabled=true;
+                }
+            }
+
+            function enabledElement(elementArr){
+                for(var i=0;i<elementArr.length;i++){
+                    elementArr[i].disabled=false;
+                }
+            }*/
+
+            function initHostSelection(items){
+                var len=items.length;
+                var oS=document.getElementById("hostSelection");
+                clearSelectionBox(document.getElementById('agentSelection'));
+                clearSelectionBox(document.getElementById('instanceSelection'));
+                for(var i=0;i<len;i++){
+                    var oOption=document.createElement("option");
+                    oOption.setAttribute("value", items[i].hostId);
+                    var oNode=document.createTextNode(items[i].hostName);
+                    oOption.appendChild(oNode);
+                    oS.appendChild(oOption);
+                }
+                oS.selectedIndex=-1;
+            }
+
+            function loginToHost(){
+                fillAgent();
+            }
+
+            function fillAgent(){
+                var hostSelection=document.getElementById("hostSelection");
+                var selectedIndex=hostSelection.selectedIndex;
+                var selectedValue=hostSelection.options[selectedIndex].value;
+
+                clearSelectionBox(document.getElementById('instanceSelection'));
+
+                Test.getHostAgentNames(selectedValue,function(data){
+                    var agentNames=eval('('+data+')');
+                    var len=agentNames.length;
+                    var agentSelection=document.getElementById('agentSelection');
+                    clearSelectionBox(agentSelection);
+                    for(var i=0;i<len;i++){
+                        var oOption=document.createElement("option");
+                        oOption.setAttribute("value", agentNames[i].agentName);
+                        var oNode=document.createTextNode(agentNames[i].agentDesc);
+                        oOption.appendChild(oNode);
+                        agentSelection.appendChild(oOption);
+                    }
+                    agentSelection.selectedIndex=-1;
+                });
+            }
+
+            function fillInstance(){
+                var hostSelection=document.getElementById("hostSelection");
+                var agentSelection=document.getElementById("agentSelection");
+
+                var hostSelectedValue=hostSelection.options[hostSelection.selectedIndex].value;
+                var agentSelectedValue=agentSelection.options[agentSelection.selectedIndex].value;
+
+                Test.getHostAgentInstances(hostSelectedValue,agentSelectedValue,function(data){
+                    var inst=eval('('+data+')');
+                    var len=inst.length;
+                    var instSelection=document.getElementById('instanceSelection');
+                    clearSelectionBox(instSelection);
+                    for(var i=0;i<len;i++){
+                        var oOption=document.createElement("option");
+                        oOption.setAttribute("value", inst[i]);
+                        var oNode=document.createTextNode(inst[i]);
+                        oOption.appendChild(oNode);
+                        instSelection.appendChild(oOption);
+                    }
+                    drawTree();
+                });
+            
+            }
+        
+         /**   function clearSelection(oList){
+                for(var i=oList.options.length-1;i>=0;i--){
+                    oList.remove(i);
+                }
+            }*/
+
+        
+            (function(){
+                var init = function() {
+                    var handleSubmit=function(){
+                        var hostList=document.getElementById('hostSelection');
+                        var selectedHost=hostList.options[hostList.selectedIndex].value;
+
+                        var username=document.getElementById('username').value;
+                        var password=document.getElementById('password').value;
+                        var port=document.getElementById('port').value;
+
+                        var errorInfo=document.getElementById('loginerrormsg');
+                        if(username==""){
+                            errorInfo.innerHTML="Please provide username";
+                            errorInfo.style.display="block";
+                        }
+                        if(port==""){
+                            errorInfo.innerHTML="Please provide access port.";
+                            errorInfo.style.display="block";
+                        }
+                        SshService.isAuthenticated(selectedHost,username,password,port,function(data){
+                            var isAuthenticated=eval('('+data+')');
+                            if(!isAuthenticated){
+                                errorInfo.innerHTML="Login failed. Click cancel to leave this dialog";
+                                errorInfo.style.display="block";
+                            }else{
+                                document.getElementById('hideLoginDialog').click();
+                                osUserName=username;
+                                osPassword=password;
+                                osPort=port;
+                                fillAgent();
+                            }
+                        });
+                    }
+
+                    var handleCancel=function(){
+                        this.hide();
+                        resetLoginDialg();
+                    }
+
+                    var loginDialog=new YAHOO.widget.Dialog("loginDialog",
                     {
                         width:"25em",
                         fixedcenter:true,
@@ -528,19 +524,89 @@
                         ]
                     });
 
-               loginDialog.render();
-               YAHOO.util.Event.addListener("showLoginDialog","click",loginDialog.show,loginDialog,true);
-               YAHOO.util.Event.addListener("hideLoginDialog", "click", loginDialog.hide, loginDialog, true);
-            }
-            YAHOO.util.Event.onDOMReady(init);
-        })();
+                    loginDialog.render();
+                    YAHOO.util.Event.addListener("showLoginDialog","click",loginDialog.show,loginDialog,true);
+                    YAHOO.util.Event.addListener("hideLoginDialog", "click", loginDialog.hide, loginDialog, true);
+                }
+                YAHOO.util.Event.onDOMReady(init);
+            })();
 
-        function resetLoginDialog(){
-            document.getElementById('loginerrormsg').style.display="none";
-            document.getElementById('username').value="";
-            document.getElementById('password').value="";
-            document.getElementById('port').value="22";
-        }
+            function resetLoginDialog(){
+                document.getElementById('loginerrormsg').style.display="none";
+                document.getElementById('username').value="";
+                document.getElementById('password').value="";
+                document.getElementById('port').value="22";
+            }
+
+            function showSubmitBackupContent(){
+                displayBackupOption();
+                displayBackupSchedule();
+            }
+
+            function displayBackupOption(){
+                var backupOption=document.getElementById('backupOptionArea');
+                var radioGroup=document.getElementsByName("backup-type");
+                var backupType=getButtonGroupValue(radioGroup);
+                var xx;
+                if(backupType==="full"){
+                    xx="完全备份";
+                }else{
+                    xx="增量备份";
+                    var incrlevel=document.getElementById('incrlevel').value;
+                    xx=xx+"\n"+"级别: "+incrlevel;
+                }
+                backupOption.innerHTML="备份类型: "+xx
+            }
+
+            function displayBackupSchedule(){
+                var scheduleArea=document.getElementById('scheduleOptionArea');
+                var whenToAction=document.getElementsByName('whenToAction');
+                var when=getButtonGroupValue(whenToAction);
+                var scheduleOption="";
+                if(when==="immediate"){
+                    scheduleOption="立即执行";
+                }else if(when==="once"){
+                    scheduleOption="执行一次";
+                    var time=document.getElementById('once_time').value;
+
+                    scheduleOption=scheduleOption+"<br/>"+"执行时间: "+time;
+                }else if(when==="period"){
+                    scheduleOption="周期执行";
+                    var time=document.getElementById('period_time').value;
+                    scheduleOption=scheduleOption+"<br/>"+"执行时间: "+time;
+                }
+                scheduleArea.innerHTML=scheduleOption;
+            }
+
+            function submitAction(){
+                var selectionSet=getSelectionSet();
+                
+            }
+
+            function getSelectionSet(){
+                var nodes=getCheckedNodes();
+                var arr=[];
+                for(var i=0;i<nodes.length;i++){
+                    var fileName=getFilePath(nodes[i]);
+                    var fileType=nodes[i].hasChildren()?"d":"f";
+                    var checkState=nodes[i].checkState;
+                    var fileParent=getFilePath(nodes[i].parent);
+                    var fileObj=FileNode(fileType,fileName,fileParent,checkState);
+                    arr.push(fileNodeJSON(fileObj));
+                }
+                return arr;
+                /**   BackupService.getFileBackupSelectionSet(arrToJSON(arr),function(data){
+
+                });*/
+            }
+
+            function getOptionSet(){
+                var backupOption=new Object;
+                backupOption.backupLevel="";
+                backupOption.backupType="";
+                backupOption.compressLevel="";
+                return backupOption;
+            }
         </script>
     </head>
     <body class="yui-skin-sam">
@@ -569,7 +635,7 @@
                 </ul>
                 <div class="yui-content">
                     <div id="selectionTab">
-                        
+
                         <div id="selectionTree">
                             <div id="treeDiv1" style="height: 600px;overflow:scroll"></div>
                         </div>
@@ -688,23 +754,47 @@
                                 <td><select id="vgs" style="width:170px"></select></td>
                             </tr>
                         </table>
-                        <div id="submitTab"></div>
+                    </div>
+                    <div id="submitTab" style="height:600px;">
+                        <div id="submitContent">
+                            <p>本次作业摘要如下</p>
+                            <table id="submitTable">
+                                <tr>
+                                    <td><label>备份选项:</label></td>
+                                    <td>
+                                        <textarea  id="backupOptionArea" rows="4" cols="25">
+
+                                        </textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>调度选项:</label></td>
+                                    <td>
+                                        <div id="scheduleOptionArea"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label>作业名:</label></td>
+                                    <td><input type="jobName" id="jobName"/></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-            <div id="controlButtonPanel">
-                <input type="button" value="上一步" id="preButton" onclick="previousTab()"/>
-                <input type="button" value="下一步" id="nextButton" onclick="nextTab()"/>
-                <input type="button" value="提交作业" onclick="submitJob()"/>
+        <div id="controlButtonPanel">
+            <input type="button" value="上一步" id="preButton" onclick="previousTab()"/>
+            <input type="button" value="下一步" id="nextButton" onclick="nextTab()"/>
+            <input type="button" value="提交作业" onclick="submitJob()"/>
 
-                <input type="button" value="Get selected" onclick="getSelected()"/>
-                <button id="showLoginDialog" style="display:none">Show Dailog</button>
-                <button id="hideLoginDialog" style="display:none">Hide Dialog</button>
+            <input type="button" value="Get selected" onclick="showSubmitBackupContent()"/>
+            <button id="showLoginDialog" style="display:none">Show Dailog</button>
+            <button id="hideLoginDialog" style="display:none">Hide Dialog</button>
 
-            </div>
+        </div>
 
-            <script type="text/javascript">
+        <script type="text/javascript">
             var tabView;
             var activeTab;
             (function(){
@@ -759,12 +849,12 @@
                 document.getElementById('preButton').disabled=preButtonDisabled;
                 document.getElementById('nextButton').disabled=nextButtonDisabled;
             }
-            </script>
-            <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-            <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
-            <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
-            <script type="text/javascript" src="js/jquery-spin.js"></script>
-            <script type="text/javascript">
+        </script>
+        <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript" src="js/jquery-spin.js"></script>
+        <script type="text/javascript">
             $(document).ready(function(){
                 $.spin.imageBasePath='js/img/spin2/';
                 $('#incrlevel').spin();
@@ -797,6 +887,6 @@
 
                 });
             })();
-            </script>
+        </script>
     </body>
 </html>

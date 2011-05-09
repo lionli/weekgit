@@ -3,8 +3,10 @@
  * and open the template in the editor.
  */
 
-var formUtils=new Object;
-
-formUtils.fillListBox=function(listBox,name,value){
-    
+function getButtonGroupValue(buttonGroup){
+    for(var i=0;i<buttonGroup;i++){
+        if(buttonGroup[i].checked){
+            return buttonGroup[i].value;
+        }
+    }
 }

@@ -61,7 +61,7 @@ public class XMLUtils {
         Element root=doc.addElement("backupOption");
         root.addElement("BackupLevel").addAttribute("Level", map.get("backupLevel"));
         root.addElement("BackupType").addAttribute("Value", map.get("backupType"));
-        root.addElement("CompressionLevel").addAttribute("Value",map.get("Value"));
+        root.addElement("CompressionLevel").addAttribute("Value",map.get("compressLevel"));
         return outputDocument(doc);
     }
 

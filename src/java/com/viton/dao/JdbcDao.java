@@ -9,6 +9,7 @@ import com.viton.model.AgentConfiguration;
 import com.viton.model.BackupResource;
 import com.viton.model.Device;
 import com.viton.model.Host;
+import com.viton.model.Job;
 import com.viton.model.VitonLog;
 import com.viton.model.VolumeGroup;
 import java.io.ByteArrayOutputStream;
@@ -214,9 +215,6 @@ public class JdbcDao {
 
     public List<Host> getRegMediaServer() throws Exception {
         List<Host> hosts = new ArrayList<Host>();
-    /**    String sql = "select h.host_id as hostid,host_name,pguser as hostPgUser,"
-                + "hostip_for_data,host_desc, dev_name,dev_type,dev_path,dev_descript "
-                + "from host_reg h, device d where h.host_id=d.host_id order by host_name";*/
         String sql="select host_id, host_name, pguser, hostip_for_data, host_desc "
                 + "from host_reg where is_ms='true' order by host_id";
 
@@ -232,20 +230,6 @@ public class JdbcDao {
                 host.setIpForData(rs.getString("hostip_for_data"));
                 host.setDesc(rs.getString("host_desc"));
                 hosts.add(host);
-            /**    Host host = new Host(rs.getString("hostid"));
-                if (!hosts.contains(host)) {
-                    host.setHostName(rs.getString("host_name"));
-                    host.setPguser(rs.getString("hostPgUser"));
-                    host.setIpForData(rs.getString("hostip_for_data"));
-                    host.setDesc(rs.getString("host_desc"));
-                    hosts.add(host);
-                }
-                Device dev = new Device();
-                dev.setName(rs.getString("dev_name"));
-                dev.setType(rs.getString("dev_type"));
-                dev.setPath(rs.getString("dev_path"));
-                dev.setDesc(rs.getString("dev_descript"));
-                hosts.get(hosts.indexOf(host)).addDevice(dev);*/
             }
             rs.close();
             stat.close();
@@ -669,5 +653,43 @@ public class JdbcDao {
         rs.close();
         ps.close();
         return baos.toString();
+    }
+
+    public List<Job> getJobs() throws Exception{
+        List<Job> jobs=new ArrayList<Job>();
+        String sql="select hr.host_name as hostname,ar.agent_desc as agentdesc,"
+                + "jd.title as title,jd.type as type, j.run_time as runtime,"
+                + "j.duration as duration,j.status as status "
+                + "from job j, job_def jd, host_reg hr,selection_set ss, "
+                + "resource_reg rr, agent_reg ar where j.job_def_id=jd.job_def_id "
+                + "and jd.host_id=hr.host_id and jd.selection_set_id=ss.selection_set_id "
+                + "and ss.resource_id=rr.resource_id and rr.agent_name=ar.agent_name "
+                + "order by hr.host_name";
+        Connection conn=null;
+        try{
+            conn=dataSource.getConnection();
+            Statement stat=conn.createStatement();
+            ResultSet rs=stat.executeQuery(sql);
+            while(rs.next()){
+                Job job=new Job();
+                job.setHostName(rs.getString("hostname"));
+                job.setAgentType(rs.getString("agentdesc"));
+                job.setJobName(rs.getString("title"));
+                job.setJobType(rs.getString("type"));
+                job.setStartTime(rs.getString("runtime"));
+                job.setDurationTime(rs.getString("duration"));
+                job.setJobStatus(rs.getString("status"));
+                jobs.add(job);
+            }
+            rs.close();
+            stat.close();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception(e);
+        }finally{
+            if(conn!=null)
+                conn.close();
+        }
+        return jobs;
     }
 }

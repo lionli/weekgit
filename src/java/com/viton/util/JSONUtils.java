@@ -10,6 +10,7 @@ import com.viton.model.AgentConfiguration;
 import com.viton.model.BackupResource;
 import com.viton.model.Device;
 import com.viton.model.Host;
+import com.viton.model.Job;
 import com.viton.model.VolumeGroup;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -184,7 +185,6 @@ public class JSONUtils {
         public List creatArrayContainer() {
             return new LinkedList();
         }
-
     }
 
     public static Map<String,String> parseAgentInfo(String jsonText) throws Exception{
@@ -207,5 +207,10 @@ public class JSONUtils {
             list.add(info);
         }
         return list;
+    }
+
+    public static String encodingJob(List<Job> jobs) throws Exception{
+        List jobList=new LinkedList();
+        return JSONValue.toJSONString(jobList);
     }
 }

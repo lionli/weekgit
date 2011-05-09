@@ -7,6 +7,8 @@ package com.viton.service;
 
 import com.viton.dao.JdbcDao;
 import com.viton.util.JSONUtils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,13 +17,20 @@ import com.viton.util.JSONUtils;
 public class JobService {
     private JdbcDao dao;
 
+    private final static Logger logger=Logger.getLogger(JobService.class.getName());
+
     public void setDao(JdbcDao dao) {
         this.dao = dao;
     }
 
     public String getHostAgents(String hostId) throws Exception{
         String xx=JSONUtils.agentToJSONString(dao.getHostAgentNameAndDesc(hostId));
-        System.out.println(xx);
+        logger.log(Level.WARNING, "Host Agents: "+xx);
         return xx;
+    }
+
+    public String getJobs() throws Exception{
+        
+        return "";
     }
 }
