@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-03-29T03:34:19.138Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="NWg_7716aGw9IhA8a7Eb" version="21.1.0" type="github">
+<mxfile host="app.diagrams.net" modified="2023-03-29T03:42:48.017Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="N3u9IGna9JzAT6HhVoVy" version="21.1.0" type="github">
   <diagram name="第 1 页" id="NEMKKQaK1uxJpbrKpXOc">
-    <mxGraphModel dx="757" dy="528" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1302" dy="698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -18,6 +18,57 @@
         </mxCell>
         <mxCell id="K6kNRtlA78W-d0zcRaae-5" value="凭证·" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
           <mxGeometry x="640" y="260" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-6" value="未提交" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="640" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-7" value="审批中" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="710" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-8" value="审批结束" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="790" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-9" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="K6kNRtlA78W-d0zcRaae-7" target="K6kNRtlA78W-d0zcRaae-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="448.5" y="660" as="sourcePoint" />
+            <mxPoint x="498.5" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="K6kNRtlA78W-d0zcRaae-11" target="K6kNRtlA78W-d0zcRaae-15">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="225" y="930" />
+              <mxPoint x="225" y="930" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-11" value="付款中" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="870" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-12" value="归档" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="185" y="1020" width="75" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-14" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="K6kNRtlA78W-d0zcRaae-6" target="K6kNRtlA78W-d0zcRaae-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="230" y="680" as="sourcePoint" />
+            <mxPoint x="280" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-15" value="付款完成" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="187.5" y="940" width="70" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-18" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="K6kNRtlA78W-d0zcRaae-8" target="K6kNRtlA78W-d0zcRaae-11">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="230" y="830" as="sourcePoint" />
+            <mxPoint x="280" y="780" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K6kNRtlA78W-d0zcRaae-19" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="K6kNRtlA78W-d0zcRaae-15" target="K6kNRtlA78W-d0zcRaae-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="880" as="sourcePoint" />
+            <mxPoint x="500" y="830" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
