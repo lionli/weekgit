@@ -1,9 +1,63 @@
-<mxfile host="app.diagrams.net" modified="2023-03-31T03:00:19.340Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" version="21.1.2" etag="8QaUILxlF1O57L4nCtiL" type="github">
+<mxfile host="app.diagrams.net" modified="2023-03-31T03:09:56.197Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="fL391O3Ehv2wPIwJuH_2" version="21.1.2" type="github">
   <diagram name="第 1 页" id="_rJdtlYfwb0N5OUM8Gia">
-    <mxGraphModel>
+    <mxGraphModel dx="1562" dy="965" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-1" value="" style="swimlane;startSize=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="70" width="600" height="820" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-2" value="单据视图" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="70" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-3" value="字段关联" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="254" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-4" value="联动必填" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="70" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-5" value="单据复制" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="270" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-6" value="场景式填单" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="70" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-7" value="单据导入" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="280" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-8" value="单据流程属性" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="80" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-9" value="费用分摊" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="250" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-10" value="专票税金行" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="80" y="460" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-11" value="单据关联" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="270" y="460" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-12" value="合同关联" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="70" y="590" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-13" value="智审辅助" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="294" y="590" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-14" value="单据校验" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="70" y="690" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-15" value="单据打印" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="270" y="690" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-16" value="费用子表" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="420" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-18" value="下拉树" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="440" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bmmSWkYPPXFbDXWjDGTz-19" value="附件管理" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="bmmSWkYPPXFbDXWjDGTz-1">
+          <mxGeometry x="460" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
